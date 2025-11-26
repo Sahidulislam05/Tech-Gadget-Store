@@ -1,8 +1,8 @@
 "use client";
+import AuthContext from "@/provider/AuthContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { use, useState } from "react";
 import toast from "react-hot-toast";
-
 import Swal from "sweetalert2";
 
 const CATEGORIES = [
@@ -14,8 +14,8 @@ const CATEGORIES = [
   "Smart Home",
   "Others",
 ];
-
 export default function AddProductPage() {
+  const { user } = use(AuthContext);
   const [formData, setFormData] = useState({
     title: "",
     category: CATEGORIES[0],
@@ -25,6 +25,7 @@ export default function AddProductPage() {
     imageUrl: "",
     releaseDate: new Date().toISOString().substring(0, 10),
     priority: "Medium",
+    userEmail: user?.email || "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -77,6 +78,7 @@ export default function AddProductPage() {
           imageUrl: "",
           releaseDate: new Date().toISOString().substring(0, 10),
           priority: "Medium",
+          userEmail: user?.email,
         });
       } else {
         const errorData = await response.json();

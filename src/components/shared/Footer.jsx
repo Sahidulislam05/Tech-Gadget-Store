@@ -3,7 +3,7 @@ import React from "react";
 import logo from "../../../public/logo.png";
 const Footer = () => {
   return (
-    <div className="bg-base-200 text-base-content">
+    <div className="bg-base-300 text-base-content">
       <footer className="footer sm:footer-horizontal w-11/12 mx-auto p-10">
         <aside>
           <Image src={logo} width={70} height={40} alt="Logo"></Image>

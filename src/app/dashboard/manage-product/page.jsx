@@ -1,17 +1,19 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import AuthContext from "@/provider/AuthContext";
 
 export default function ManageProductsPage() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { user } = use(AuthContext);
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("https://tech-gadget-server.vercel.app/products");
+      const res = await fetch(
+        `https://tech-gadget-server.vercel.app/my-products?email=${user?.email}`
+      );
       const data = await res.json();
       setProducts(data);
     } catch (error) {
@@ -40,7 +42,7 @@ export default function ManageProductsPage() {
     if (result.isConfirmed) {
       try {
         const res = await fetch(
-          `https://tech-gadget-server.vercel.app/products/${productId}`,
+          `https://tech-gadget-server.vercel.app/products/${productId}?email=${user?.email}`,
           {
             method: "DELETE",
           }
@@ -70,19 +72,22 @@ export default function ManageProductsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-8">
-      <h1 className="text-3xl font-bold mb-6">
-        Manage Products ({products.length})
+    <div className="container mx-auto px-4 md:px-6 py-8 min-h-screen">
+      <h1 className="text-center text-3xl font-bold mb-6 text-primary">
+        Manage My Products
+      </h1>
+      <h1 className="text-xl font-bold mb-6">
+        ({products.length}) products found.
       </h1>
 
       {products.length === 0 && (
-        <div className="text-center py-20 text-gray-500 text-xl">
-          No products found.
+        <div className="text-center py-20 text-gray-500 text-2xl">
+          You haven’t create any product yet.
         </div>
       )}
 
       {products.length > 0 && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-gray-200">
           <table className="table table-zebra w-full bg-base-100 shadow rounded-xl">
             <thead>
               <tr className="text-base font-semibold">
